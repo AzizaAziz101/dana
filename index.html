@@ -111,8 +111,13 @@ const rtxt=document.getElementById('rtxt'),rsub=document.getElementById('rsub');
 let W,H,starCvs;
 
 function resize(){
-  W=gc.width=fx.width=window.innerWidth;
-  H=gc.height=fx.height=window.innerHeight;
+  const dpr=window.devicePixelRatio||1;
+  W=window.innerWidth;H=window.innerHeight;
+  gc.width=fx.width=Math.round(W*dpr);
+  gc.height=fx.height=Math.round(H*dpr);
+  gc.style.width=fx.style.width=W+'px';
+  gc.style.height=fx.style.height=H+'px';
+  g.scale(dpr,dpr);f.scale(dpr,dpr);
   buildStars();buildCloudCvs();buildClouds();buildVig();buildMtns();
 }
 window.addEventListener('resize',resize);
@@ -137,7 +142,7 @@ function buildMtns(){
       bumps.push({
         cx:W*(i+0.5+(Math.random()-.5)*.5)/n,
         h:H*hf*(.50+Math.random()*.50),
-        w:W*(.13+Math.random()*.09)/n*1.9
+        w:(W/n)*(0.60+Math.random()*.36)
       });
     }
     mtnData.push({bumps,col,sf});
@@ -449,7 +454,7 @@ function drawTower(cx,y,fold){
 
 function drawRocket(cx,cy,t,exh){
   g.save();g.translate(cx,cy);g.rotate(t);
-  const rw=(W<600?W*.030:W*.022),rh=H*.24;
+  const rw=(W<400?W*.038:W<600?W*.032:W*.022),rh=H*.24;
 
   // aft flaps (smaller)
   const fy=-rh*.08;
@@ -601,7 +606,7 @@ function renderLvlBar(){
   }
 }
 function drawRing(){
-  const cx=W/2,cy=H*.46,R=Math.min(W,H)*.17;
+  const cx=W/2,cy=H*.46,R=Math.min(W,H)*(W<500?.22:.17);
   // tick marks
   for(let i=0;i<24;i++){
     const ta=(i*15-90)*Math.PI/180;
