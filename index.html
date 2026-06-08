@@ -138,11 +138,13 @@ function buildMtns(){
   [[7,.11,'rgba(50,65,98,.26)',.16],[4,.26,'rgba(14,25,46,.54)',.43],[3,.40,'rgba(4,8,18,.82)',.76]]
   .forEach(([n,hf,col,sf])=>{
     const bumps=[];
+    const sw=W/n;
     for(let i=0;i<n;i++){
+      const cx=sw*(i+0.5)+(Math.random()-.5)*sw*.15;
       bumps.push({
-        cx:W*(i+0.5+(Math.random()-.5)*.5)/n,
+        cx,
         h:H*hf*(.50+Math.random()*.50),
-        w:(W/n)*(0.60+Math.random()*.36)
+        w:sw*.40   // fest: 80% des Slots, kein Überlapp möglich
       });
     }
     mtnData.push({bumps,col,sf});
